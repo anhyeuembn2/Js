@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <!-- https://cdnjs.com/libraries/twitter-bootstrap/5.0.0-beta1 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/css/bootstrap.min.css"
+    />
+
+    <!-- Icons: https://getbootstrap.com/docs/5.0/extend/icons/ -->
+    <!-- https://cdnjs.com/libraries/font-awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+
+    <title>Hello, world!</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <h3 class="text-center my-5">
+        Hiện thị chi tiết
+      </h3>
+      <div class="row" id="show-product"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      // console.log(location.href);
+       const showProduct=document.querySelector('#show-product');
+       console.log(showProduct)
+       const url=new URL(location.href);
+       console.log(url)
+       const params=new URLSearchParams(url.search);
+       console.log(params)
+       const id=params.get("id");
+       console.log(id)
+       fetch(`https://5e79b4b817314d00161333da.mockapi.io/posts/${id}`)
+       .then((res)=> res.json())
+       .then((data)=>{
+           showProduct.innerHTML=/*html*/`
+             <div class="col-6">
+                <img src="${data.img}" class="w-100"/>
+              </div>
+              <div class="col-6">
+                  <h3>Tên sản phẩm :${data.name}</h3>
+                  <p>Mô tả :${data.desc}</p>
+                  <p>Giá sản phẩm :${data.price}</p>
+                  <input class="form-control mb-3" id="qty" productdetail="Nhập số lượng sản phẩm" type="number"/>
+                  <button class="btn btn-primary" id="add-cart">Thêm vào giỏ hàng</button>
+              </div>
+
+          `;
+          const addCart=document.querySelector('#add-cart');
+          const qty=document.querySelector('#qty');
+          let carts=JSON.parse(localStorage.getItem("CART"));
+          console.log(carts);
+          addCart.addEventListener('click',function(){
+             const cart={
+                data,
+                quantity:+qty.value
+             }
+             if(carts){
+                const loadCart=carts.find((item)=> item.id===id);
+                if(loadCart){
+                   carts.quantity+=+qty.value;
+                }else{
+                   carts.push(cart);
+                }
+               
+             }else{
+                carts=[];
+                carts.push(cart);
+              
+             }
+             localStorage.setItem("CART",JSON.stringify(cart));
+             console.log(data)
+          })
+          
+          
+       })
+    </script>
+  </body>
+</html>

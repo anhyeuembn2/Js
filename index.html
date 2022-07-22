@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <h2>đăng kí thành viên</h2>
+
+      <form action="" id="form">
+        <label for="">Họ và tên</label>
+        <span id="errName"></span>
+        <input type="text" placeholder="Họ và tên" id="fullName" /> <br /><br />
+        <label for="">Mật khẩu</label>
+        <span id="errPass"></span>
+        <input
+          type="password"
+          placeholder="Mật khẩu"
+          id="passWord"
+        /><br /><br />
+        <label for="">Khẳng định mật khẩu</label>
+        <span id="checkPass1"></span>
+        <input
+          type="password"
+          placeholder="Khẳng định mật khẩu"
+          id="checkPass"
+        /><br /><br />
+        <label for="">Ngày tháng năm sinh</label>
+        <input type="date" placeholder="Ngày tháng năm sinh" /><br /><br />
+        <label for="">Số điện thoại</label>
+        <span id="errPhone"></span>
+        <input
+          type="number"
+          placeholder="Số điện thoại"
+          id="phoneNumber"
+        /><br /><br />
+        <label for="">Đường dẫn ảnh</label>
+        <input type="file" placeholder="Đường dẫn ảnh" /> <br /><br />
+        <button id="submit1" type="submit" onclick="formValidate()">Đăng kí</button>
+        <button id="btn btn-primary" type="button" onclick="remove()">Hủy bỏ</button>
+      </form>
+      
+    </div>
+  </body>
+  <script>
+    const form=document.getElementById('form');
+    form.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        formValidate();
+        remove();
+    })
+   
+    
+    
+    
+    function formValidate(){
+        const name=document.getElementById("fullName").value;
+       
+        const err1=document.getElementById("errName");
+        const regex1=/^[^\d]+$/g;
+        if(name===""){
+            err1.innerHTML="Không được để trống!";
+        }else if(regex1.test(name)===false){
+            err1.innerHTML="Họ và tên không hợp lệ";
+            alert("Họ và tên không hợp lệ")
+        }else{
+            err1.innerHTML="";
+            
+        }
+        const pass=document.getElementById("passWord").value;
+        console.log(pass)
+        const err2=document.getElementById("errPass");
+        const regex2=/[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}/g;
+        if(pass===""){
+            err2.innerHTML="Không được để trống!";
+        }else if(regex2.test(pass)===false){
+            err2.innerHTML="Mật khẩu không hợp lệ";
+            alert("Mật khẩu không hợp lệ");
+        }else{
+            err2.innerHTML="";
+           
+        }
+        const checkPass=document.getElementById('checkPass').value;
+        console.log(checkPass)
+        const err3=document.getElementById('checkPass1');
+       
+        const pass1=document.getElementById("passWord").value;
+        if(checkPass===""){
+            err3.innerHTML="Không được để trống";
+        }else if(checkPass!==pass1){
+            err3.innerHTML="không trùng mật khẩu";
+            alert("Mật khẩu không trùng khớp");
+        }else{
+            err3.innerHTML="";
+            
+        }
+        const phone=document.getElementById("phoneNumber").value;
+        const err4=document.getElementById("errPhone");
+        const regex3=/[0-9()-][^a-zA-Z@\&*]{10}/g;
+        if(phone===""){
+            err4.innerHTML="Không được để trống";
+        }else if(regex3.test(phone)===false){
+            err4.innerHTML="Số điện thoại không hợp lệ";
+            alert('Số điện thoại không hợp lệ');
+        }else{
+            err4.innerHTML="";
+            
+        }
+        if(name && phone && pass && checkPass && checkPass===pass1){
+            alert("Đăng kí thành công");
+            return true;
+        }
+        return false;
+        
+    }
+  </script>
+</html>

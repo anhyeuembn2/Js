@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <!-- https://cdnjs.com/libraries/twitter-bootstrap/5.0.0-beta1 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/css/bootstrap.min.css"
+    />
+
+    <!-- Icons: https://getbootstrap.com/docs/5.0/extend/icons/ -->
+    <!-- https://cdnjs.com/libraries/font-awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Ảnh</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Tổng tiền</th>
+            <th scope="col">Chức năng</th>
+          </tr>
+        </thead>
+        <tbody class="list-data"></tbody>
+      </table>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      const listdata = document.querySelector(".list-data");
+      let carts = JSON.parse(localStorage.getItem("carts"));
+      console.log("carts", carts);
+      
+      if (carts) {
+        const result = carts
+          .map(
+            (cart) =>
+              `
+            <tr>
+                <td></td>
+                <td>${cart.name}</td>
+                <td><img src="${cart.img}" width="100" /></td>
+                <td>${cart.price}</td>
+                <td>
+                  <button data-id="${
+                    cart.id
+                  }" class="btn btn-danger btn-tru">-</button>
+                 <span>${cart.quanlity}</span>
+                 <button data-id="${
+                   cart.id
+                 }" class="btn btn-primary btn-cong">+</button>
+                 </td>
+                <td>${cart.quanlity * Number(cart.price)}</td>
+                
+                <td>
+                    <button data-id="${
+                      cart.id
+                    }" class="btn btn-danger btn-remove">Xóa</button>
+                </td>
+            </tr>
+          `
+          )
+          .join("");
+
+        listdata.innerHTML = result;
+
+        const btn_tru = document.querySelectorAll(".btn-tru");
+        const btn_cong = document.querySelectorAll(".btn-cong");
+
+        btn_tru.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            tru(id);
+          });
+        });
+
+        btn_cong.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            cong(id);
+          });
+        });
+
+        const cong = (id) => {
+          const cart = carts.find((item) => item.product.id === id);
+          if (cart) {
+            cart.quanlity += 1;
+          }
+          localStorage.setItem("carts", JSON.stringify(carts));
+          location.reload();
+        };
+
+        const tru = (id) => {
+          const cart = carts.find((item) => item.product.id === id);
+          if (cart.quanlity > 1) {
+            cart.quanlity -= 1;
+          } else {
+            if (window.confirm("Bạn có muốn xóa sản phầm này không ? ")) {
+              carts = carts.filter((item) => item.product.id !== id);
+            }
+          }
+
+          localStorage.setItem("carts", JSON.stringify(carts));
+          location.reload();
+        };
+      }
+    </script>
+  </body>
+</html>

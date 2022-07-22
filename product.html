@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <!-- https://cdnjs.com/libraries/twitter-bootstrap/5.0.0-beta1 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/css/bootstrap.min.css"
+    />
+
+    <!-- Icons: https://getbootstrap.com/docs/5.0/extend/icons/ -->
+    <!-- https://cdnjs.com/libraries/font-awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <div class="container">
+      <h3 class="text-center">Hiện thị sản phẩm</h3>
+      <div class="row" id="list-data"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-beta1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      const listdata = document.querySelector("#list-data");
+      const loadData = async () => {
+        const data = await axios.get(
+          "https://5e79b4b817314d00161333da.mockapi.io/posts"
+        );
+        const products = data.data;
+        console.log(products)
+        listdata.innerHTML = products
+          .map(
+            (product) =>
+              `
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="card">
+              <img src="${product.img}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">${product.name}</h5>
+                <p class="card-text">${product.desc}</p>
+                <a href="productdetail.html?id=${product.id}" class="btn btn-primary">Xem chi tiết</a>
+              </div>
+            </div>
+        </div>
+          `
+          )
+          .join("");
+
+        
+        
+      };
+      loadData();
+    </script>
+  </body>
+</html>
