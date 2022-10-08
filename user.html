@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action=""  style="width:200">
+        <label for="">Username</label>
+        <input type="text" placeholder="Uername" id="user"> <br> <br>
+        <label for="">Password</label>
+        <input type="password" placeholder="Password" id="pass"> <br><br>
+        <button id="btn" onclick="handlePass()" >Check Out Password</button>
+    </form>
+    <script>
+      
+        
+        const btn=document.getElementById("btn");
+        btn.addEventListener('click',()=>{
+            const userValue=document.getElementById("user").value;
+            const passValue=document.getElementById("pass").value;
+            const regexCheck=/^[^0-9]+[A-Za-z0-9]{8,}$/g;
+           
+
+           if(userValue==="" || passValue===""){
+               alert("Không được để trống");
+               
+           }else if(regexCheck.test(passValue)===true){
+               alert("Bạn nhập đúng");
+           }else{
+               alert("Bạn nhập sai");
+           }
+        })
+       
+    </script>
+</body>
+</html>
